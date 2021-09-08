@@ -5,7 +5,7 @@
     image_name: kelvinduan/nodejswebapp
     tag_name: latest
     container_name: nodejswebapp
-    port: 3000
+    exposed_port: 3000
     
   tasks:
   - name: stop old docker container
@@ -25,4 +25,4 @@
     ignore_errors: yes
     
   - name: run docker image in container
-    command: docker run -d -p {{ port }}:{{ port }} --name {{ container_name }} {{ image_name }}:{{ tag_name }}
+    command: docker run -d -p {{ exposed_port }}:{{ exposed_port }} --name {{ container_name }} {{ image_name }}:{{ tag_name }}
