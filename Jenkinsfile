@@ -15,7 +15,8 @@ node{
             ansiblePlaybook credentialsId: 'ansible-to-webapp', 
                             installation: 'ansible', 
                             inventory: 'host.inv',
-                            playbook: 'PushToDockerHub.yml'
+                            playbook: 'PushToDockerHub.yml',  
+                            extras: "-e docker_hub_pwd=${dockerHubPWD}"
         }
     }
     
