@@ -1,0 +1,13 @@
+---
+- hosts: localhost
+  become: true
+  vars:
+    image_name: kelvinduan/nodejswebapp
+    tag_name: latest
+    
+  tasks:      
+  - name: login to docker hub
+    command: docker login -u kelvinduan -p {{ docker_hub_pwd }}
+    
+  - name: push docker image to docker hub
+    command: docker push {{ image_name }}:{{ tag_name }}
