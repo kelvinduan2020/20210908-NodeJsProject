@@ -1,0 +1,28 @@
+---
+- hosts: webserver
+  become: true
+  vars:
+    image_name: kelvinduan/nodejswebapp
+    tag_name: latest
+    container_name: nodejswebapp
+    port: 8080
+    
+  tasks:
+  - name: stop old docker container
+    command: docker stop {{ container_name }}
+    ignore_errors: yes
+  
+  - name: remove old docker container
+    command: docker rm {{ container_name }}
+    ignore_errors: yes
+  
+  - name: remove old docker image
+    command: docker rmi {{ image_name }}:{{ tag_name }}
+    ignore_errors: yes
+    
+  - name: pull new docker image
+    command: docker pull {{ image_name }}:{{ tag_name }}
+    ignore_errors: yes
+    
+  - name: run docker image in container
+    command: docker run -d -p {{ port }}:{{ port }} --name {{ container_name }} {{ image_name }}:{{ tag_name }}
