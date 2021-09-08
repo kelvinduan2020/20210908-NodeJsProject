@@ -1,6 +1,6 @@
 node{
     stage('Git Checkout'){
-        git https://github.com/kelvinduan2020/20210908-NodeJsProject.git
+        git 'https://github.com/kelvinduan2020/20210908-NodeJsProject.git'
     }
     
     stage('Create Docker Image'){
