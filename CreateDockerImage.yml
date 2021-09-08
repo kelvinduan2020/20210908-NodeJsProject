@@ -1,0 +1,17 @@
+---
+- hosts: localhost
+  become: true
+  vars:
+    image_name: kelvinduan/nodejswebapp
+    tag_name: latest
+    jenkins_job_name: 20210908-NodeJs-Ansible-Docker
+    
+  tasks:
+  - name: remove old docker image
+    command: docker rmi {{ image_name }}:{{ tag_name }}
+    ignore_errors: yes
+    
+  - name: build new docker image
+    command: docker build -t {{ image_name }}:{{ tag_name }} .
+    args:
+      chdir: /var/lib/jenkins/workspace/{{ jenkins_job_name }}
