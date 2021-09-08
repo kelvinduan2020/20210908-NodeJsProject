@@ -24,6 +24,6 @@ node{
         ansiblePlaybook credentialsId: 'ansible-to-webapp', 
                         installation: 'ansible', 
                         inventory: 'ansible/host.inv', 
-                        playbook: 'ansible/DeployDockerImage.yml'
+                        playbook: 'ansible/DeployOnContainer.yml'
     }
 }
