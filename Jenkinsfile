@@ -4,7 +4,8 @@ node{
     }
     
     stage('Create Docker Image'){
-        ansiblePlaybook installation: 'ansible', 
+        ansiblePlaybook credentialsId: 'ansible-to-webapp',
+                        installation: 'ansible', 
                         inventory: 'host.inv', 
                         playbook: 'CreateDockerImage.yml'
     }
