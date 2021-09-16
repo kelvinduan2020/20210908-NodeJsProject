@@ -5,12 +5,12 @@ node{
     
     stage('Deploy on Kubernetes'){
         sshagent(['k8s-slave']) {
-            sh 'scp -o StrictHostKeyChecking=no kubernetes/nodejsapp.yaml vagrant@192.168.0.108:/home/vagrant'
+            sh 'scp -o StrictHostKeyChecking=no kubernetes/nodejsapp.yaml vagrant@192.168.0.106:/home/vagrant'
             script {
                 try {
-                    sh 'ssh vagrant@192.168.0.108 kubectl apply -f .'
+                    sh 'ssh vagrant@192.168.0.106 kubectl apply -f .'
                 } catch(error) {
-                    sh 'ssh vagrant@192.168.0.108 kubectl create -f .'
+                    sh 'ssh vagrant@192.168.0.106 kubectl create -f .'
                 }
             }
         }
