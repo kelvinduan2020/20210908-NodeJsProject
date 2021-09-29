@@ -1,0 +1,44 @@
+node{
+    stage('Git Checkout'){
+        git branch: 'main', url: 'https://github.com/kelvinduan2020/20210908-NodeJsProject.git'
+    }
+    
+    stage('Deploy on Kubernetes'){
+        sshagent(['k8s']) {
+            sh 'scp -o StrictHostKeyChecking=no kubernetes/nodejsapp.yaml vagrant@192.168.0.107:/home/vagrant'
+            script {
+                try {
+                    sh 'ssh vagrant@192.168.0.107 kubectl apply -f .'
+                } catch(error) {
+                    sh 'ssh vagrant@192.168.0.107 kubectl create -f .'
+                }
+            }
+        }
+    }
+}
+
+
+def dockerImage
+
+node{
+    stage("Git Checkout"){
+        git branch: 'main', url: 'https://github.com/kelvinduan2020/20210908-NodeJsProject.git'
+    }
+    stage("Build Docker Image"){
+        def props = readJSON file: 'package.json'
+        def name = props['name']
+        def version = props['version']
+        dockerImage = docker.build("kelvinduan/${name}:${version}")
+    }
+    stage("Push To DockerHub"){
+        withDockerRegistry(credentialsId: 'DockerHub', url: '') {
+            dockerImage.push()
+        }
+    }
+    stage("Deploy to Kubernetes"){
+        sshagent(['k8s']) {
+            sh 'scp -o StrictHostKeyCHecking=no kubernetes/nodejsapp.yaml vagrant@192.168.56.105:/home/vagrant'
+            sh 'ssh vagrant@192.168.56.105 sudo kubectl apply -f nodejsapp.yaml'
+        }
+    }
+}
